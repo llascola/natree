@@ -29,6 +29,18 @@ data ProofTree =
     | OrElim Prop ProofTree (ProofTree -> ProofTree) (ProofTree -> ProofTree)
     | ImpliesElim Prop ProofTree ProofTree 
     | BottomElim Prop Prop
-    | NotElim Prop ProofTree
+    | DobNotElim Prop ProofTree
     
     
+tnd :: ProofTree
+tnd = 
+  DobNotElim (Or (Atom 0) (Not (Atom 0))) 
+    (NotInt (Not (Not (Or (Atom 0) (Not (Atom 0))))) 
+      (BottomInt Bottom 
+        (OrInt (Or (Atom 0) (Not (Atom 0))) Second 
+          (NotInt (Not (Atom 0)) 
+            (BottomInt Bottom 
+            (OrInt (Or (Atom 0) (Not (Atom 0))) First
+              (Hip (Atom 0))))))))
+            (Hip (Not (Or (Atom 0) (Not (Atom 0)))))
+        (Hip (Not (Or (Atom 0) (Not (Atom 0)))))

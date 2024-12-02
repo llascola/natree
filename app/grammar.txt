@@ -1,0 +1,40 @@
+-- Prop grammar --
+
+prop1 :== prop2 '->' prop2 | prop2
+
+prop2 :== prop3 '/\' prop3 | prop3 '\/' prop3 | prop3
+
+prop3 :== '¬' prop4 | prop4 
+
+prop4 :== atom | '(' prop1 ')'
+
+atom  :== char | char nat
+
+def   :== char def1
+
+def1  :== char | char def1
+
+-- Context grammar --
+
+context :== prop1 | prop1 ',' context 
+
+-- Proof grammar --
+
+proof :== 
+            prop1 'by' rule1 '{' proof '}'
+        |   prop1 'by' rule2 '{' proof '}' '{' proof '}'
+        |   prop1 'by' '\/e' '{' proof '}' '{' proof '}' '{' proof '}' 
+
+rule1 :== '/\e1' | '/\e2' | '¬i' | '¬¬e' | '->i' | '\/i1' | '\/i2' 
+
+rule2 :== '/\i' | '->e' | '¬e' | 
+
+
+--  --
+'context' '{' context '}' 'proof' proof
+
+-- examples
+
+"¬(¬p \/ ¬q) -> p /\ q"
+
+"(p -> q) \/ (q -> r)"

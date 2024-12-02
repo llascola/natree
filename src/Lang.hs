@@ -1,4 +1,4 @@
-module Lang (someFunc) where
+module Lang where
 
 
 -- AST para Prop
@@ -41,6 +41,6 @@ tnd =
           (NotInt (Not (Atom 0)) 
             (BottomInt Bottom 
             (OrInt (Or (Atom 0) (Not (Atom 0))) First
-              (Hip (Atom 0))))))))
-            (Hip (Not (Or (Atom 0) (Not (Atom 0)))))
-        (Hip (Not (Or (Atom 0) (Not (Atom 0)))))
+              (Hip (Atom 0)))
+            (Hip (Not (Or (Atom 0) (Not (Atom 0))))))))
+        (Hip (Not (Or (Atom 0) (Not (Atom 0)))) ) ) )

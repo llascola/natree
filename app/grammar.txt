@@ -2,9 +2,9 @@
 
 prop1 :== prop2 '->' prop2 | prop2
 
-prop2 :== prop3 '/\' prop3 | prop3 '\/' prop3 | prop3
+prop2 :== prop3 '&&' prop3 | prop3 '||' prop3 | prop3
 
-prop3 :== '¬' prop4 | prop4 
+prop3 :== '!' prop4 | prop4 
 
 prop4 :== atom | '(' prop1 ')'
 
@@ -25,9 +25,9 @@ proof :==
         |   prop1 'by' rule2 '{' proof '}' '{' proof '}'
         |   prop1 'by' '\/e' '{' proof '}' '{' proof '}' '{' proof '}' 
 
-rule1 :== '/\e1' | '/\e2' | '¬i' | '¬¬e' | '->i' | '\/i1' | '\/i2' 
+rule1 :== '||e1' | '&&e2' | '!i' | '!!e' | '->i' | '||i1' | '||i2' 
 
-rule2 :== '/\i' | '->e' | '¬e' | 
+rule2 :== '&&i' | '->e' | '!e' | 
 
 
 --  --
@@ -35,6 +35,6 @@ rule2 :== '/\i' | '->e' | '¬e' |
 
 -- examples
 
-"¬(¬p \/ ¬q) -> p /\ q"
+"!(!p || !q) -> p && q"
 
-"(p -> q) \/ (q -> r)"
+"(p -> q) $$ (q -> r)"

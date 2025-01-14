@@ -59,7 +59,7 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules: Lang
+    exposed-modules: Lang, Parser
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -68,7 +68,7 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.17.2.0
+    build-depends:    base ^>=4.17.2.0, parsec
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -82,6 +82,7 @@ executable natree
 
     -- .hs or .lhs file containing the Main module.
     main-is:          Main.hs
+
 
     -- Modules included in this executable, other than Main.
     -- other-modules:

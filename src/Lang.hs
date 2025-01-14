@@ -4,43 +4,48 @@ module Lang where
 -- AST para Prop
 
 
-data Prop =
-    Not Prop
-  | And Prop Prop
-  | Or Prop Prop
-  | Implies Prop Prop
-  | Atom Int
+type Name = String
+
+data SProp =
+    Not SProp
+  | And SProp SProp
+  | Or SProp SProp
+  | Implies SProp SProp
+  | Atom Name
   | Bottom
+  | Def Name
+    deriving (Show, Eq)
+
 
 data Pos = First | Second
 
 data ProofTree =
     -- Regla trivial
-      Trivial Prop ProofTree
-    | Hip Prop
+      Trivial SProp ProofTree
+    | Hip SProp
     -- Reglas de introducción
-    | AndInt Prop ProofTree ProofTree
-    | OrInt Prop Pos ProofTree 
-    | ImpliesInt Prop (ProofTree -> ProofTree)
-    | BottomInt Prop ProofTree ProofTree
-    | NotInt Prop ProofTree
+    | AndInt SProp ProofTree ProofTree
+    | OrInt SProp Pos ProofTree 
+    | ImpliesInt SProp (ProofTree -> ProofTree)
+    | BottomInt SProp ProofTree ProofTree
+    | NotInt SProp ProofTree
     -- Reglas de eliminación
-    | AndElim Prop Pos ProofTree
-    | OrElim Prop ProofTree (ProofTree -> ProofTree) (ProofTree -> ProofTree)
-    | ImpliesElim Prop ProofTree ProofTree 
-    | BottomElim Prop Prop
-    | DobNotElim Prop ProofTree
+    | AndElim SProp Pos ProofTree
+    | OrElim SProp ProofTree (ProofTree -> ProofTree) (ProofTree -> ProofTree)
+    | ImpliesElim SProp ProofTree ProofTree 
+    | BottomElim SProp SProp
+    | DobNotElim SProp ProofTree
     
     
 tnd :: ProofTree
 tnd = 
-  DobNotElim (Or (Atom 0) (Not (Atom 0))) 
-    (NotInt (Not (Not (Or (Atom 0) (Not (Atom 0))))) 
+  DobNotElim (Or (Atom "0") (Not (Atom "0"))) 
+    (NotInt (Not (Not (Or (Atom "0") (Not (Atom "0"))))) 
       (BottomInt Bottom 
-        (OrInt (Or (Atom 0) (Not (Atom 0))) Second 
-          (NotInt (Not (Atom 0)) 
+        (OrInt (Or (Atom "0") (Not (Atom "0"))) Second 
+          (NotInt (Not (Atom "0")) 
             (BottomInt Bottom 
-            (OrInt (Or (Atom 0) (Not (Atom 0))) First
-              (Hip (Atom 0)))
-            (Hip (Not (Or (Atom 0) (Not (Atom 0))))))))
-        (Hip (Not (Or (Atom 0) (Not (Atom 0)))) ) ) )
+            (OrInt (Or (Atom "0") (Not (Atom "0"))) First
+              (Hip (Atom "0")))
+            (Hip (Not (Or (Atom "0") (Not (Atom "0"))))))))
+        (Hip (Not (Or (Atom "0") (Not (Atom "0")))) ) ) )

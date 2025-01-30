@@ -20,15 +20,19 @@ context :== prop1 | prop1 ',' context
 
 -- Proof grammar --
 
-proof :== 
-            prop1 'by' rule1 '{' proof '}'
-        |   prop1 'by' rule2 '{' proof '}' '{' proof '}'
-        |   prop1 'by' '\/e' '{' proof '}' '{' proof '}' '{' proof '}' 
+proof :== prop 'by' (rule0 | rule1 | rule2 | rule3)
 
-rule1 :== '||e1' | '&&e2' | '!i' | '!!e' | '->i' | '||i1' | '||i2' 
+rule0 :== 'hip' nat
 
-rule2 :== '&&i' | '->e' | '!e' | 
+rule1 :== ('&&e1' | '&&e2' | '!i' | '!!e' | '->i' nat | '||i1' | '||i2' | 't') subtree1
 
+rule2 :== ('&&i' | '0i' | '->e') subtree2
+
+rule3 :== '||e' nat nat subtree3
+
+subtree1 :== '{' proof '}'
+subree2  :== '{' proof '}' '{' proof '}'
+subtree3 :== '{' proof '}' '{' proof '}' '{' proof '}'
 
 --  --
 'context' '{' context '}' 'proof' proof

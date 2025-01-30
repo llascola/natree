@@ -19,33 +19,52 @@ data SProp =
 
 data Pos = First | Second
 
+data NaTree = 
+    -- Regla trivial
+      Trivial NaTree SProp 
+    | Hip Integer SProp
+    -- Reglas de introducción
+    | AndInt NaTree NaTree SProp 
+    | OrInt Pos NaTree SProp 
+    | ImpliesInt Integer NaTree SProp 
+    | BottomInt NaTree NaTree SProp 
+    | NotInt NaTree SProp 
+    --Reglas de eliminación
+    | AndElim Pos NaTree SProp 
+    | OrElim NaTree Integer NaTree Integer NaTree SProp 
+    | ImpliesElim NaTree NaTree SProp 
+    | BottomElim NaTree SProp 
+    | DobNotElim NaTree SProp 
+
+
+
 data ProofTree =
     -- Regla trivial
-      Trivial SProp ProofTree
-    | Hip SProp
+      PTrivial SProp ProofTree
+    | PHip SProp
     -- Reglas de introducción
-    | AndInt SProp ProofTree ProofTree
-    | OrInt SProp Pos ProofTree 
-    | ImpliesInt SProp (ProofTree -> ProofTree)
-    | BottomInt SProp ProofTree ProofTree
-    | NotInt SProp ProofTree
+    | PAndInt SProp ProofTree ProofTree
+    | POrInt SProp Pos ProofTree 
+    | PImpliesInt SProp (ProofTree -> ProofTree)
+    | PBottomInt SProp ProofTree ProofTree
+    | PNotInt SProp ProofTree
     -- Reglas de eliminación
-    | AndElim SProp Pos ProofTree
-    | OrElim SProp ProofTree (ProofTree -> ProofTree) (ProofTree -> ProofTree)
-    | ImpliesElim SProp ProofTree ProofTree 
-    | BottomElim SProp SProp
-    | DobNotElim SProp ProofTree
+    | PAndElim SProp Pos ProofTree
+    | POrElim SProp ProofTree (ProofTree -> ProofTree) (ProofTree -> ProofTree)
+    | PImpliesElim SProp ProofTree ProofTree 
+    | PBottomElim SProp SProp
+    | PDobNotElim SProp ProofTree
     
     
 tnd :: ProofTree
 tnd = 
-  DobNotElim (Or (Atom "0") (Not (Atom "0"))) 
-    (NotInt (Not (Not (Or (Atom "0") (Not (Atom "0"))))) 
-      (BottomInt Bottom 
-        (OrInt (Or (Atom "0") (Not (Atom "0"))) Second 
-          (NotInt (Not (Atom "0")) 
-            (BottomInt Bottom 
-            (OrInt (Or (Atom "0") (Not (Atom "0"))) First
-              (Hip (Atom "0")))
-            (Hip (Not (Or (Atom "0") (Not (Atom "0"))))))))
-        (Hip (Not (Or (Atom "0") (Not (Atom "0")))) ) ) )
+  PDobNotElim (Or (Atom "0") (Not (Atom "0"))) 
+    (PNotInt (Not (Not (Or (Atom "0") (Not (Atom "0"))))) 
+      (PBottomInt Bottom 
+        (POrInt (Or (Atom "0") (Not (Atom "0"))) Second 
+          (PNotInt (Not (Atom "0")) 
+            (PBottomInt Bottom 
+            (POrInt (Or (Atom "0") (Not (Atom "0"))) First
+              (PHip (Atom "0")))
+            (PHip (Not (Or (Atom "0") (Not (Atom "0"))))))))
+        (PHip (Not (Or (Atom "0") (Not (Atom "0")))) ) ) )
